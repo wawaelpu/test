@@ -3,66 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Display</title>
+    <title>RGB Keyboard Background Animation</title>
     <style>
-        body {
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
         }
-        
-        .time-container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            text-align: center;
+        .rainbow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(270deg, red, orange, yellow, green, cyan, blue, violet);
+            background-size: 400% 400%;
+            animation: rainbowAnimation 10s ease infinite;
         }
-        
-        .time-display {
-            font-size: 72px;
-            font-weight: bold;
-            color: #333;
-            font-family: 'Courier New', monospace;
+        @keyframes rainbowAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        
-        .date-display {
-            font-size: 18px;
-            color: #666;
-            margin-top: 10px;
+        .time {
+            position: relative;
+            color: white;
+            font-size: 2rem;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <div class="time-container">
-        <div class="time-display" id="time">00:00:00</div>
-        <div class="date-display" id="date">Loading...</div>
-    </div>
-    
+    <div class="rainbow"></div>
+    <div class="time" id="timeDisplay"></div>
     <script>
         function updateTime() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            const dateString = now.toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            
-            document.getElementById('time').textContent = timeString;
-            document.getElementById('date').textContent = dateString;
+            const formattedTime = now.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+            document.getElementById('timeDisplay').textContent = formattedTime;
         }
-        
-        // Update time immediately
-        updateTime();
-        
-        // Update every second
         setInterval(updateTime, 1000);
+        updateTime();
     </script>
 </body>
 </html>
